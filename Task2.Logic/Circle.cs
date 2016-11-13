@@ -33,8 +33,9 @@ namespace Task2.Logic
             get { return radius; }
             set
             {
-                if (value <= 0)
-                    throw new ArgumentOutOfRangeException($"{nameof(value)} is less or equal to zero");
+                if (value <= Epsilon)
+                    throw new ArgumentOutOfRangeException($"{nameof(value)} is less" +
+                                                          $" or equal to {nameof(Epsilon)}");
                 radius = value;
             }
         }

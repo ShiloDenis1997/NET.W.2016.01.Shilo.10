@@ -16,12 +16,20 @@ namespace Task2.Logic
         {
             try
             {
-                string eps = ConfigurationManager.AppSettings["epsilon"];
+                string eps = ConfigurationManager.AppSettings["shapeEpsilon"];
                 Epsilon = double.Parse(eps);
+                if (Epsilon <= 0 || Epsilon >= 1)
+                    throw new Exception();
             }
-            catch (Exception)
+            catch (ConfigurationErrorsException cee)
             {
                 Epsilon = EpsilonDefaultValue;
+            }
+            catch (Exception ex)
+            {
+                throw new ConfigurationErrorsException($"shapeEpsilon in configuration file has " +
+                                                       $"invalid value. It must be greater than zero" +
+                                                       $" and less than 1");
             }
         }
 
