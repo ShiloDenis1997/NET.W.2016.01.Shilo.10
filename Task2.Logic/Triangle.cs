@@ -76,11 +76,11 @@ namespace Task2.Logic
         /// </summary>
         private bool VerifySides(double a, double b, double c)
         {
-            if (Math.Abs(a + b - c) <= Epsilon)
+            if (a + b - c <= Epsilon)
                 return false;
-            if (Math.Abs(a + c - b) <= Epsilon)
+            if (a + c - b <= Epsilon)
                 return false;
-            if (Math.Abs(c + b - a) <= Epsilon)
+            if (c + b - a <= Epsilon)
                 return false;
             return true;
         }

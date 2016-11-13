@@ -32,11 +32,11 @@ namespace Task2.Logic
                 if (Epsilon <= 0 || Epsilon >= 1)
                     throw new Exception();
             }
-            catch (ConfigurationErrorsException cee)
+            catch (ConfigurationErrorsException)
             {
                 Epsilon = EpsilonDefaultValue;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new ConfigurationErrorsException($"shapeEpsilon in configuration file has " +
                                                        $"invalid value. It must be greater than zero" +
