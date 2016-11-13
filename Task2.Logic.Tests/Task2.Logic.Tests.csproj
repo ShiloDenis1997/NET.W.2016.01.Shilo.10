@@ -46,10 +46,17 @@
   <ItemGroup>
     <Compile Include="CircleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RectangleTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Task2.Logic\Task2.Logic.csproj">
+      <Project>{b6301b23-53cf-46af-be61-f7c62f8491d6}</Project>
+      <Name>Task2.Logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
