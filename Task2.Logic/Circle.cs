@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Task2.Logic
 {
     /// <summary>
-    /// Class represents circle behavior
+    /// Class represents behavior of circle
     /// </summary>
     public class Circle : Shape
     {
@@ -25,10 +25,10 @@ namespace Task2.Logic
         }
 
         /// <summary>
-        /// Property to work with circle's radius
+        /// Circle's radius
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">Throws if setted value
-        ///  is less or equal to zero</exception>
+        ///  is less or equal to <see cref="Shape.Epsilon"/></exception>
         public double Radius {
             get { return radius; }
             set
@@ -40,8 +40,13 @@ namespace Task2.Logic
             }
         }
 
+        /// <summary>
+        /// Perimeter of circle
+        /// </summary>
         public override double Perimeter => 2*Math.PI*radius;
-
+        /// <summary>
+        /// Square of circle
+        /// </summary>
         public override double Square => Math.PI/2.0*radius*radius;
     }
 }

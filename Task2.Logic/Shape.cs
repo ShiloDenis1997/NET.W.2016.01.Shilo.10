@@ -7,9 +7,20 @@ using System.Threading.Tasks;
 
 namespace Task2.Logic
 {
+    /// <summary>
+    /// Represents abstract shape logic
+    /// </summary>
     public abstract class Shape
     {
+        /// <summary>
+        /// Default value of <see cref="Shape.Epsilon"/>
+        /// </summary>
         public const double EpsilonDefaultValue = 1e-6;
+        /// <summary>
+        /// Epsilon for all evaluations with <see cref="Shape"/>s. Your can set
+        /// it in App.config file with key="shapeEpsilon". If not specified, value will
+        /// be setted to <see cref="EpsilonDefaultValue"/>
+        /// </summary>
         public static double Epsilon { get; }
         
         static Shape()
@@ -33,7 +44,13 @@ namespace Task2.Logic
             }
         }
 
+        /// <summary>
+        /// Perimeter of shape
+        /// </summary>
         public abstract double Perimeter { get; }
+        /// <summary>
+        /// Foursquare of shape
+        /// </summary>
         public abstract double Square { get; }
     }
 }

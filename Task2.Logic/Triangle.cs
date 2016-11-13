@@ -34,23 +34,38 @@ namespace Task2.Logic
                 throw new ArgumentException("Can't construct a triangle with values: " +
                                                       $"{nameof(a)} = {a}, {nameof(b)} = {b}, " +
                                                       $"{nameof(c)} = {c}");
-            SideA = a;
-            SideB = b;
-            SideC = c;
+            A = a;
+            B = b;
+            C = c;
         }
 
-        public double SideA { get; }
-        public double SideB { get; }
-        public double SideC { get; }
+        /// <summary>
+        /// Side of triangle
+        /// </summary>
+        public double A { get; }
+        /// <summary>
+        /// Side of triangle
+        /// </summary>
+        public double B { get; }
+        /// <summary>
+        /// Side of triangle
+        /// </summary>
+        public double C { get; }
 
-        public override double Perimeter => SideA + SideB + SideC;
+        /// <summary>
+        /// Perimeter of triangle
+        /// </summary>
+        public override double Perimeter => A + B + C;
 
+        /// <summary>
+        /// Square of triangle
+        /// </summary>
         public override double Square
         {
             get
             {
                 double p = Perimeter/2;
-                return Math.Sqrt(p*(p - SideA)*(p - SideB)*(p - SideC));
+                return Math.Sqrt(p*(p - A)*(p - B)*(p - C));
             }
         }
 
