@@ -6,7 +6,24 @@ using System.Threading.Tasks;
 
 namespace Task2.Logic
 {
-    class Triangle
+    public class Triangle : Shape
     {
+        private double sideA;
+        private double sideB;
+        private double sideC;
+
+        public Triangle(double a, double b, double c)
+        {
+            
+        }
+
+        
+        public override double Perimeter { get; }
+        public override double Square { get; }
+
+        private bool VerifySides(double a, double b, double c)
+        {
+            return true;
+        }
     }
 }

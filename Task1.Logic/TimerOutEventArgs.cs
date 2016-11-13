@@ -8,11 +8,11 @@ namespace Task1.Logic
 {
     public class TimerOutEventArgs : EventArgs
     {
-        public int Timeout { get; private set; }
-
         public TimerOutEventArgs(int timeout)
         {
             Timeout = timeout;
         }
+
+        public int Timeout { get; private set; }
     }
 }
