@@ -21,7 +21,7 @@ namespace Task1.Logic.ConsoleTests
                 switch (choice)
                 {
                     case "0":
-                        goto userInputOut;
+                        goto userInputStopped;
                     case "1":
                         timer = new Timer();
                         Console.WriteLine("New timer created.\n");
@@ -67,7 +67,7 @@ namespace Task1.Logic.ConsoleTests
                         break;
                 }
             } while (true);
-            userInputOut:
+            userInputStopped:
             ;
         }
         
