@@ -72,14 +72,14 @@ namespace Task4.BookStorageLogic
                 {
                     using (BinaryReader br = new BinaryReader(fs))
                     {
-                        do
+                        while (br.BaseStream.Position != br.BaseStream.Length) 
                         {
                             string name = br.ReadString();
                             string author = br.ReadString();
                             int publishedYear = br.ReadInt32();
                             decimal price = br.ReadDecimal();
                             books.Add(new Book(name, author, publishedYear, price));
-                        } while (br.BaseStream.Position != br.BaseStream.Length);
+                        } 
                     }
                 }
             }
