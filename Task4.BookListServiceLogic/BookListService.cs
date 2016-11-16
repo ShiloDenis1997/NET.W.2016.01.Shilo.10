@@ -46,7 +46,9 @@ namespace Task4.BookListServiceLogic
         /// <exception cref="ArgumentNullException">Throws if 
         /// <paramref name="comparison"/> is null</exception>
         public BookListService(Comparison<Book> comparison)
-            :this(new ComparisonToIComparerAdapter<Book>(comparison)) { }
+            : this(new ComparisonToIComparerAdapter<Book>(comparison))
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of <see cref="BookListService"/> class that contains 
@@ -85,7 +87,9 @@ namespace Task4.BookListServiceLogic
         /// <exception cref="ArgumentNullException">Throws if <paramref name="books"/> or
         /// <paramref name="comparison"/> is null</exception>
         public BookListService(IEnumerable<Book> books, Comparison<Book> comparison)
-            :this(books, new ComparisonToIComparerAdapter<Book>(comparison)) { }
+            : this(books, new ComparisonToIComparerAdapter<Book>(comparison))
+        {
+        }
 
         /// <summary>
         /// Adds a book to the book list
@@ -107,7 +111,7 @@ namespace Task4.BookListServiceLogic
         public void RemoveBook(Book book)
         {
             bool isWasRemoved = bookSet.Remove(book);
-            if(!isWasRemoved)
+            if (!isWasRemoved)
                 throw new BookListException($"{nameof(book)} is already removed" +
                                             "from the book list");
         }
@@ -160,23 +164,53 @@ namespace Task4.BookListServiceLogic
         /// </summary>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="storage"/>
         ///  is null</exception>
+        /// <exception cref="BookListException">Throws if some errors while storing books
+        /// if <paramref name="storage"/></exception>
         public void StoreBooks(IBookListStorage storage)
         {
             if (storage == null)
                 throw new ArgumentNullException($"{nameof(storage)} is null");
-            storage.StoreBooks(this);
+            try
+            {
+                storage.StoreBooks(this);
+            }
+            catch (Exception ex)
+            {
+                throw new BookListException($"Error while storing books in {nameof(storage)}", ex);
+            }
         }
 
         /// <summary>
-        /// Loads books to <paramref name="storage"/>
+        /// Loads books from <paramref name="storage"/>. All duplicationes will be deleted
         /// </summary>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="storage"/>
         /// is null</exception>
+        /// <exception cref="BookListException">Throws if some errors while
+        /// loading books from <paramref name="storage"/></exception>
         public void LoadBooks(IBookListStorage storage)
         {
             if (storage == null)
                 throw new ArgumentNullException($"{nameof(storage)} is null");
-            bookSet = new SortedSet<Book>(storage.LoadBooks(), bookSet.Comparer);
+            IEnumerable<Book> books;
+            try
+            {
+                books = storage.LoadBooks();
+            }
+            catch (Exception ex)
+            {
+                throw new BookListException($"Cannot load books from {nameof(storage)}", ex);
+            }
+            if (books == null)
+                throw new BookListException($"{nameof(storage.LoadBooks)} returned null");
+            bookSet.Clear();
+            foreach (Book b in books)
+            {
+                try
+                {
+                    AddBook(b);
+                }
+                catch (BookListException) { }
+            }
         }
 
         /// <summary>

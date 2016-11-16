@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Task4.BookListServiceLogic
 {
+    /// <summary>
+    /// Exception that can be raised while working with <see cref="BookListService"/>
+    /// </summary>
     public class BookListException : Exception
     {
         public BookListException() { }
