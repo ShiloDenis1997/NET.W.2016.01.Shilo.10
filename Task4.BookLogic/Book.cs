@@ -11,62 +11,22 @@ namespace Task4.BookLogic
     /// </summary>
     public class Book : IEquatable<Book>, IComparable, IComparable<Book>
     {
-        private string name;
-        private string author;
-        private int publishedYear;
         private decimal price;
 
         /// <summary>
         /// Books name
         /// </summary>
-        /// <exception cref="ArgumentException">
-        /// Throws if value is null, empty or whitespace</exception>
-        public string Name
-        {
-            get { return name; }
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException
-                        ($"value for {nameof(Name)} is null, empty or whitespace");
-                name = value;
-            }
-        }
+        public string Name { get; }
 
         /// <summary>
         /// Author of the book
         /// </summary>
-        /// <exception cref="ArgumentException">Throws if value is
-        /// null, empty or whitespace</exception>
-        public string Author
-        {
-            get { return author; }
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException
-                        ($"value for {nameof(Author)} is null, empty or whitespace");
-                author = value;
-            }
-        }
+        public string Author { get; }
 
         /// <summary>
         /// Year, when book was published
         /// </summary>
-        /// <exception cref="ArgumentException">Throws if value is 
-        /// less or equal to zero</exception>
-        public int PublishedYear
-        {
-            get { return publishedYear; }
-            set
-            {
-                if (value <= 0)
-                    throw new ArgumentException
-                        ($"value for {nameof(PublishedYear)}" +
-                         "is less or equal to zero");
-                publishedYear = value;
-            }
-        }
+        public int PublishedYear { get; }
 
         /// <summary>
         /// Price of the book
@@ -87,11 +47,20 @@ namespace Task4.BookLogic
         }
 
         /// <summary>
-        /// 
+        /// Constructs a book
         /// </summary>
         /// <exception cref="ArgumentException">Throws if one of the parameters is invalid</exception>
         public Book(string name, string author, int publishedYear, decimal price)
         {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentException(
+                    $"{nameof(name)} is empty, whitespace or null");
+            if (string.IsNullOrEmpty(author))
+                throw new ArgumentException(
+                    $"{nameof(author)} is empty, whitespace or null");
+            if (publishedYear <= 0)
+                throw new ArgumentException(
+                    $"{nameof(publishedYear)} is less or equal to zero");
             Name = name;
             Author = author;
             PublishedYear = publishedYear;
@@ -107,12 +76,32 @@ namespace Task4.BookLogic
                 return true;
             if (!(other.GetType() == GetType()))
                 return false;
-            return Name.other.Name && Au
+            return Name.Equals(other.Name) && Author.Equals(other.Author)
+                   && PublishedYear == other.PublishedYear && Price == other.Price;
         }
 
+        /// <summary>
+        /// Compare books by <see cref="Name"/>, if equals then by 
+        /// <see cref="Author"/>, if equals then by <see cref="PublishedYear"/>,
+        /// if equals then by <see cref="Price"/>.
+        /// String values compares with InvariantCulture
+        /// </summary>
         public int CompareTo(Book other)
         {
-            throw new NotImplementedException();
+            if (other == null)
+                return 1;
+            int ret = string.Compare
+                (Name, other.Name, StringComparison.InvariantCulture);
+            if (ret != 0)
+                return ret;
+            ret = string.Compare
+                (Author, other.Author, StringComparison.InvariantCulture);
+            if (ret != 0)
+                return ret;
+            ret = PublishedYear.CompareTo(other.PublishedYear);
+            if (ret != 0)
+                return ret;
+            return Price.CompareTo(other.Price);
         }
 
         public override bool Equals(object obj)
@@ -127,6 +116,12 @@ namespace Task4.BookLogic
             return Equals(book);
         }
 
+        public override int GetHashCode()
+        {
+            return ((Name.GetHashCode() << 5) ^ Author.GetHashCode() << 7) 
+                ^ PublishedYear;
+        }
+
         public override string ToString()
         {
             return $"{nameof(Name)} = {Name}\n" +
@@ -135,9 +130,21 @@ namespace Task4.BookLogic
                    $"{nameof(PublishedYear)} = {PublishedYear}";
         }
 
-        public int CompareTo(object obj)
+        /// <summary>
+        /// Uses <see cref="CompareTo"/>
+        /// </summary>
+        /// <exception cref="ArgumentException">Throws if 
+        /// <paramref name="obj"/> cannot be casted to <see cref="Book"/></exception>
+        int IComparable.CompareTo(object obj)
         {
-            throw new NotImplementedException();
+            if (obj == null)
+                return 1;
+            Book book = obj as Book;
+            if (book == null)
+                throw new ArgumentException($"{nameof(obj)} has type" +
+                                            $"{obj.GetType()}. It cannot be compared" +
+                                            $"with {GetType()}");
+            return CompareTo(book);
         }
     }
 }
