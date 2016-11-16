@@ -84,18 +84,17 @@ namespace Task4.BookLogic
         /// Compare books by <see cref="Name"/>, if equals then by 
         /// <see cref="Author"/>, if equals then by <see cref="PublishedYear"/>,
         /// if equals then by <see cref="Price"/>.
-        /// String values compares with InvariantCulture
         /// </summary>
         public int CompareTo(Book other)
         {
             if (other == null)
                 return 1;
             int ret = string.Compare
-                (Name, other.Name, StringComparison.InvariantCulture);
+                (Name, other.Name);
             if (ret != 0)
                 return ret;
             ret = string.Compare
-                (Author, other.Author, StringComparison.InvariantCulture);
+                (Author, other.Author);
             if (ret != 0)
                 return ret;
             ret = PublishedYear.CompareTo(other.PublishedYear);
