@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 using Task4.BookListServiceLogic;
 using Task4.BookLogic;
 
@@ -15,6 +16,10 @@ namespace Task4.BookStorageLogic
     /// </summary>
     public class BinaryFileBookStorage : IBookListStorage
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+        /// <summary>
+        /// Path to the storage binary file
+        /// </summary>
         private readonly string filepath;
 
         /// <summary>
@@ -25,7 +30,11 @@ namespace Task4.BookStorageLogic
         public BinaryFileBookStorage(string filepath)
         {
             if (string.IsNullOrEmpty(filepath))
-                throw new ArgumentException($"{nameof(filepath)} is null, whitespace or empty");
+            {
+                ArgumentException ex = new ArgumentException($"{nameof(filepath)} is null, whitespace or empty");
+                logger.Warn(ex, "{0} is ");
+                throw ex;
+            }
             this.filepath = filepath;
         }
 
@@ -54,7 +63,9 @@ namespace Task4.BookStorageLogic
             }
             catch (Exception ex)
             {
-                throw new BinaryBookStorageException("Exception while writing to file", ex);
+                var bbse = new BinaryBookStorageException("Exception while writing to storage", ex);
+                logger.Warn(bbse, "Excpetion while writing to storage");
+                throw bbse;
             }
         }
 
@@ -85,7 +96,9 @@ namespace Task4.BookStorageLogic
             }
             catch (Exception ex)
             {
-                throw new BinaryBookStorageException("Error while reading file", ex);
+                var bbse = new BinaryBookStorageException("Error while reading from storage", ex);
+                logger.Warn(bbse, "Exception while reading from storage");
+                throw bbse;
             }
             return books;
         }

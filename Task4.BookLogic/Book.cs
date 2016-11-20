@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 
 namespace Task4.BookLogic
 {
@@ -11,6 +12,8 @@ namespace Task4.BookLogic
     /// </summary>
     public class Book : IEquatable<Book>, IComparable, IComparable<Book>
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private decimal price;
 
         /// <summary>
@@ -134,15 +137,21 @@ namespace Task4.BookLogic
         /// </summary>
         /// <exception cref="ArgumentException">Throws if 
         /// <paramref name="obj"/> cannot be casted to <see cref="Book"/></exception>
+        /// <exception cref="ArgumentException">Throws if <paramref name="obj"/> is
+        /// not a type of <see cref="Book"/></exception>
         int IComparable.CompareTo(object obj)
         {
             if (obj == null)
                 return 1;
             Book book = obj as Book;
             if (book == null)
-                throw new ArgumentException($"{nameof(obj)} has type" +
+            {
+                ArgumentException ex = new ArgumentException($"{nameof(obj)} has type" +
                                             $"{obj.GetType()}. It cannot be compared" +
                                             $"with {GetType()}");
+                logger.Warn(ex, "{0} has an invalid type", nameof(book));
+                throw ex;
+            }
             return CompareTo(book);
         }
     }

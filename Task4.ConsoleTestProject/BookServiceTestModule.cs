@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 using Task4.BookListServiceLogic;
 using Task4.BookLogic;
 using Task4.BookStorageLogic;
@@ -11,8 +12,19 @@ namespace Task4.ConsoleTestProject
 {
     class BookServiceTestModule
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
+        static void OnUnhandledException
+            (object sender, UnhandledExceptionEventArgs e)
+        {
+            logger.Fatal("Unhandled exception {0}", e.ExceptionObject);
+            LogManager.Flush();
+        }
+
         static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException +=
+                (sender, eventArgs) => LogManager.Flush();
             string filepath = "storage.bin";
             BinaryFileBookStorage storage = new BinaryFileBookStorage(filepath);
             BookListService service = new BookListService();
@@ -22,6 +34,7 @@ namespace Task4.ConsoleTestProject
                 PrintMenu();
                 Console.Write("Enter your choice: ");
                 string choice = Console.ReadLine();
+                logger.Debug("user selected menu item {0}.", choice);
                 switch (choice)
                 {
                     case "0":
@@ -44,10 +57,12 @@ namespace Task4.ConsoleTestProject
                         }
                         catch (BookListException ex)
                         {
+                            logger.Warn(ex, "exception while adding book");
                             Console.WriteLine(ex.Message);
                         }
-                        catch
+                        catch (Exception ex)
                         {
+                            logger.Warn(ex, "users input data is incorrect");
                             Console.WriteLine("Some input data is incorrect");
                         }
                         break;
@@ -59,10 +74,12 @@ namespace Task4.ConsoleTestProject
                         }
                         catch (BookListException ex)
                         {
+                            logger.Warn(ex, "exception while removing book");
                             Console.WriteLine(ex.Message);
                         }
-                        catch
+                        catch (Exception ex)
                         {
+                            logger.Warn(ex, "user input is incorrect");
                             Console.WriteLine("Some input data is incorrect");
                         }
                         break;
@@ -89,8 +106,9 @@ namespace Task4.ConsoleTestProject
                                 Console.WriteLine("Book:\n" + b);
                             }
                         }
-                        catch
+                        catch (Exception ex)
                         {
+                            logger.Warn(ex, "user's price input is incorrect");
                             Console.WriteLine("Wrong price input");
                         }
                         break;
@@ -119,6 +137,7 @@ namespace Task4.ConsoleTestProject
                         }
                         catch (Exception ex)
                         {
+                            logger.Warn(ex, "exception while storing books");
                             Console.WriteLine(ex.Message);
                         }
                         break;
@@ -129,6 +148,7 @@ namespace Task4.ConsoleTestProject
                         }
                         catch (Exception ex)
                         {
+                            logger.Warn(ex, "exception while loading books");
                             Console.WriteLine(ex.Message);
                         }
                         break;
@@ -136,6 +156,7 @@ namespace Task4.ConsoleTestProject
             } while (true);
             userInputStopped:
             ;
+            LogManager.Flush();
         }
 
         static void PrintMenu()
@@ -170,4 +191,6 @@ namespace Task4.ConsoleTestProject
         }
     }
 }
+
+
 
