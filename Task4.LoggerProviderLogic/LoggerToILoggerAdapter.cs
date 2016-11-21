@@ -3,6 +3,9 @@ using NLog;
 
 namespace Task4.LoggerProviderLogic
 {
+    /// <summary>
+    /// Adapts <see cref="Logger"/> to interface <see cref="ILogger"/>
+    /// </summary>
     internal class LoggerToILoggerAdapter : ILogger
     {
         private readonly Logger logger;

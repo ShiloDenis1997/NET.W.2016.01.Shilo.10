@@ -7,6 +7,9 @@ using NLog;
 
 namespace Task4.LoggerProviderLogic
 {
+    /// <summary>
+    /// Provides most used methods of loggers
+    /// </summary>
     public interface ILogger
     {
         void Debug(string message);

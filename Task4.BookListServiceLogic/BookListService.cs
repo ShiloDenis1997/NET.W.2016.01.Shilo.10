@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NLog;
 using Task4.BookLogic;
+using Task4.LoggerProviderLogic;
 
 namespace Task4.BookListServiceLogic
 {
@@ -12,7 +11,8 @@ namespace Task4.BookListServiceLogic
     /// </summary>
     public class BookListService
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly static ILogger logger = 
+            LoggerProvider.GetLoggerForClassName(nameof(BookListService));
         /// <summary>
         /// Books are stored here
         /// </summary>

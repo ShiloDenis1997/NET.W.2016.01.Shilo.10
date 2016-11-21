@@ -1,13 +1,9 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NLog;
 using Task4.BookListServiceLogic;
 using Task4.BookLogic;
+using Task4.LoggerProviderLogic;
 
 namespace Task4.BookStorageLogic
 {
@@ -16,7 +12,8 @@ namespace Task4.BookStorageLogic
     /// </summary>
     public class BinaryFileBookStorage : IBookListStorage
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger Logger = 
+            LoggerProvider.GetLoggerForClassName(nameof(BinaryFileBookStorage));
         /// <summary>
         /// Path to the storage binary file
         /// </summary>
@@ -61,7 +58,7 @@ namespace Task4.BookStorageLogic
             }
             catch (Exception ex)
             {
-                logger.Warn(ex, "Exception while writing to storage");
+                Logger.Warn(ex, "Exception while writing to storage");
                 throw new BinaryBookStorageException("Exception while writing to storage", ex);
             }
         }
@@ -93,7 +90,7 @@ namespace Task4.BookStorageLogic
             }
             catch (Exception ex)
             {
-                logger.Warn(ex, "Exception while reading from storage");
+                Logger.Warn(ex, "Exception while reading from storage");
                 throw new BinaryBookStorageException("Error while reading from storage", ex);
             }
             return books;
