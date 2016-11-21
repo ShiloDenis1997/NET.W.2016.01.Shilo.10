@@ -44,7 +44,7 @@ namespace Task4.ConsoleTestProject
                         break;
                     case "2":
                         Console.WriteLine("Books from service:");
-                        foreach (Book book in service)
+                        foreach (Book book in service.GetListOfBooks())
                         {
                             Console.WriteLine(book);
                         }

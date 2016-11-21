@@ -65,9 +65,7 @@ namespace Task4.BookListServiceLogic
             logger.Debug("{0} constructor started", nameof(BookListService));
             if (books == null)
             {
-                var ane = new ArgumentNullException($"{nameof(books)} parameter is null");
-                logger.Warn(ane, "{0} parameter is null", nameof(books));
-                throw ane;
+                throw new ArgumentNullException($"{nameof(books)} parameter is null");
             }
             bookSet = new SortedSet<Book>(books);
         }
@@ -84,15 +82,11 @@ namespace Task4.BookListServiceLogic
             logger.Debug("{0} constructor started", nameof(BookListService));
             if (comparer == null)
             {
-                var ane = new ArgumentNullException($"{nameof(comparer)} is null");
-                logger.Warn(ane, "{0} is null", nameof(comparer));
-                throw ane;
+                throw new ArgumentNullException($"{nameof(comparer)} is null");
             }
             if (books == null)
             {
-                var ane = new ArgumentNullException($"{nameof(books)} parameter is null");
-                logger.Warn(ane, "{0} parameter is null", nameof(books));
-                throw ane;
+                throw new ArgumentNullException($"{nameof(books)} parameter is null");
             }
             bookSet = new SortedSet<Book>(books, comparer);
         }
@@ -120,10 +114,8 @@ namespace Task4.BookListServiceLogic
             bool isWasAdded = bookSet.Add(book);
             if (!isWasAdded)
             {
-                var ble = new BookListException
+                throw new BookListException
                     ($"{nameof(book)} is already in the book list");
-                logger.Warn(ble, "book is already added");
-                throw ble;
             }
         }
 
@@ -133,6 +125,7 @@ namespace Task4.BookListServiceLogic
         /// <returns></returns>
         public IEnumerable<Book> GetListOfBooks()
         {
+            logger.Debug("returning enumeration of books");
             return bookSet.ToArray();
         } 
         /// <summary>
@@ -142,13 +135,11 @@ namespace Task4.BookListServiceLogic
         public void RemoveBook(Book book)
         {
             logger.Debug("starts removing book");
-            bool isWasRemoved = bookSet.Remove(book);
-            if (!isWasRemoved)
+            bool isRemoved = bookSet.Remove(book);
+            if (!isRemoved)
             {
-                var ble = new BookListException($"{nameof(book)} is already removed" +
+                throw new BookListException($"{nameof(book)} is already removed" +
                                             "from the book list");
-                logger.Warn(ble, "book is already removed");
-                throw ble;
             }
         }
 
@@ -163,9 +154,7 @@ namespace Task4.BookListServiceLogic
             logger.Debug("starts finding book by tag");
             if (predicate == null)
             {
-                var ane = new ArgumentNullException($"{nameof(predicate)} is null");
-                logger.Warn(ane, "{0} parameter is null", nameof(predicate));
-                throw ane;
+                throw new ArgumentNullException($"{nameof(predicate)} is null");
             }
             foreach (Book b in bookSet)
             {
@@ -187,9 +176,7 @@ namespace Task4.BookListServiceLogic
             logger.Debug("starts sorting books by compare parameter");
             if (comparer == null)
             {
-                var ane = new ArgumentNullException($"{nameof(comparer)} is null");
-                logger.Warn(ane, "{0} parameter is null", nameof(comparer));
-                throw ane;
+                throw new ArgumentNullException($"{nameof(comparer)} is null");
             }
             bookSet = new SortedSet<Book>(bookSet, comparer);
         }
@@ -204,9 +191,7 @@ namespace Task4.BookListServiceLogic
             logger.Debug("starts sorting books by comparison parameter");
             if (comparison == null)
             {
-                var ane = new ArgumentNullException($"{nameof(comparison)} is null");
-                logger.Warn(ane, "{0} parameter if null", nameof(comparison));
-                throw ane;
+                throw new ArgumentNullException($"{nameof(comparison)} is null");
             }
             SortBooksByTag(new ComparisonToIComparerAdapter<Book>(comparison));
         }
@@ -223,9 +208,7 @@ namespace Task4.BookListServiceLogic
             logger.Debug("starts storing books");
             if (storage == null)
             {
-                var ane =  new ArgumentNullException($"{nameof(storage)} is null");
-                logger.Warn(ane, "{0} parameter is null", nameof(storage));
-                throw ane;
+                throw new ArgumentNullException($"{nameof(storage)} is null");
             }
             try
             {
@@ -233,9 +216,8 @@ namespace Task4.BookListServiceLogic
             }
             catch (Exception ex)
             {
-                var ble = new BookListException($"Error while storing books in {nameof(storage)}", ex);
-                logger.Warn(ble, "exception while storing books");
-                throw ble;
+                logger.Warn(ex, "exception while storing books");
+                throw  new BookListException($"Error while storing books in {nameof(storage)}", ex);
             }
         }
 
@@ -262,37 +244,14 @@ namespace Task4.BookListServiceLogic
             }
             catch (Exception ex)
             {
-                var ble = new BookListException($"Cannot load books from {nameof(storage)}", ex);
-                logger.Warn(ble, "Exception while loading books");
-                throw ble;
+                logger.Warn(ex, "Exception while loading books");
+                throw new BookListException($"Cannot load books from {nameof(storage)}", ex);
             }
             if (books == null)
             {
-                var ble = new BookListException($"{nameof(storage.LoadBooks)} returned null");
-                logger.Warn("storage returned null");
-                throw ble;
+                throw new BookListException($"{nameof(storage.LoadBooks)} returned null");
             }
-            bookSet.Clear();
-            foreach (Book b in books)
-            {
-                try
-                {
-                    AddBook(b);
-                }
-                catch (BookListException)
-                {
-                    logger.Warn("Storage contains duplicate: {0}", b);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Returns enumerator of the book list
-        /// </summary>
-        public IEnumerator<Book> GetEnumerator()
-        {
-            logger.Debug("getting book list service enumerator");
-            return bookSet.GetEnumerator();
+            bookSet = new SortedSet<Book>(books);
         }
 
         /// <summary>
@@ -304,13 +263,9 @@ namespace Task4.BookListServiceLogic
 
             public ComparisonToIComparerAdapter(Comparison<T> comparison)
             {
-                logger.Debug("{0} constructor started",
-                    nameof(ComparisonToIComparerAdapter<T>));
                 if (comparison == null)
                 {
-                    var ane = new ArgumentNullException($"{nameof(comparison)} is null");
-                    logger.Warn(ane, "{0} parameter is null", nameof(comparison));
-                    throw ane;
+                    throw new ArgumentNullException($"{nameof(comparison)} is null");
                 }
                 this.comparison = comparison;
             }
