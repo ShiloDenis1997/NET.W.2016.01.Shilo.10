@@ -84,6 +84,7 @@ namespace Task4.ConsoleTestProject
                         }
                         break;
                     case "5":
+                        service.SortBooksByTag((b1, b2) => b1.CompareTo(b2));
                         break;
                     case "6":
                         service.SortBooksByTag((b1, b2) => b1.Price.CompareTo(b2.Price));
