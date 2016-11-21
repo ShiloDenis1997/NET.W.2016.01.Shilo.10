@@ -31,9 +31,7 @@ namespace Task4.BookStorageLogic
         {
             if (string.IsNullOrEmpty(filepath))
             {
-                ArgumentException ex = new ArgumentException($"{nameof(filepath)} is null, whitespace or empty");
-                logger.Warn(ex, "{0} is ");
-                throw ex;
+                throw new ArgumentException($"{nameof(filepath)} is null, whitespace or empty");
             }
             this.filepath = filepath;
         }
@@ -63,9 +61,8 @@ namespace Task4.BookStorageLogic
             }
             catch (Exception ex)
             {
-                var bbse = new BinaryBookStorageException("Exception while writing to storage", ex);
-                logger.Warn(bbse, "Excpetion while writing to storage");
-                throw bbse;
+                logger.Warn(ex, "Exception while writing to storage");
+                throw new BinaryBookStorageException("Exception while writing to storage", ex);
             }
         }
 
@@ -96,9 +93,8 @@ namespace Task4.BookStorageLogic
             }
             catch (Exception ex)
             {
-                var bbse = new BinaryBookStorageException("Error while reading from storage", ex);
-                logger.Warn(bbse, "Exception while reading from storage");
-                throw bbse;
+                logger.Warn(ex, "Exception while reading from storage");
+                throw new BinaryBookStorageException("Error while reading from storage", ex);
             }
             return books;
         }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NLog;
 
 namespace Task4.BookLogic
 {
@@ -12,8 +11,6 @@ namespace Task4.BookLogic
     /// </summary>
     public class Book : IEquatable<Book>, IComparable, IComparable<Book>
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-
         private decimal price;
 
         /// <summary>
@@ -146,11 +143,9 @@ namespace Task4.BookLogic
             Book book = obj as Book;
             if (book == null)
             {
-                ArgumentException ex = new ArgumentException($"{nameof(obj)} has type" +
+                throw new ArgumentException($"{nameof(obj)} has type" +
                                             $"{obj.GetType()}. It cannot be compared" +
                                             $"with {GetType()}");
-                logger.Warn(ex, "{0} has an invalid type", nameof(book));
-                throw ex;
             }
             return CompareTo(book);
         }

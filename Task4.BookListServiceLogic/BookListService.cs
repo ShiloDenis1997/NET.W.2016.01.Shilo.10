@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NLog;
 using Task4.BookLogic;
 
@@ -12,7 +10,7 @@ namespace Task4.BookListServiceLogic
     /// <summary>
     /// Provides functionality to work with a list of books
     /// </summary>
-    public class BookListService : IEnumerable<Book>
+    public class BookListService
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         /// <summary>
@@ -40,9 +38,7 @@ namespace Task4.BookListServiceLogic
             logger.Debug("{0} constructor started", nameof(BookListService));
             if (comparer == null)
             {
-                var ane = new ArgumentNullException($"{nameof(comparer)} is null");
-                logger.Warn(ane, "{0} is null", nameof(comparer));
-                throw ane;
+                throw new ArgumentNullException($"{nameof(comparer)} is null");
             }
             bookSet = new SortedSet<Book>(comparer);
         }
@@ -132,6 +128,14 @@ namespace Task4.BookListServiceLogic
         }
 
         /// <summary>
+        /// Returns an enumeration of <see cref="Book"/>s in service
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Book> GetListOfBooks()
+        {
+            return bookSet.ToArray();
+        } 
+        /// <summary>
         /// Removes a book from the book list
         /// </summary>
         /// <exception cref="BookListException">Throws if the book is already removed</exception>
@@ -149,7 +153,8 @@ namespace Task4.BookListServiceLogic
         }
 
         /// <summary>
-        /// Finds a book that gives true from <paramref name="predicate"/>
+        /// Finds a book that gives true from <paramref name="predicate"/>.
+        /// Do not change the instance by returned reference!
         /// </summary>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="predicate"/>
         /// is null</exception>
@@ -224,7 +229,7 @@ namespace Task4.BookListServiceLogic
             }
             try
             {
-                storage.StoreBooks(this);
+                storage.StoreBooks(GetListOfBooks());
             }
             catch (Exception ex)
             {
@@ -288,14 +293,6 @@ namespace Task4.BookListServiceLogic
         {
             logger.Debug("getting book list service enumerator");
             return bookSet.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Returns enumerator of the book list
-        /// </summary>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         /// <summary>
