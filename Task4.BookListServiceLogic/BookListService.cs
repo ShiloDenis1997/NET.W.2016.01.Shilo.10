@@ -233,9 +233,7 @@ namespace Task4.BookListServiceLogic
             logger.Debug("starts loading books");
             if (storage == null)
             {
-                var ane = new ArgumentNullException($"{nameof(storage)} is null");
-                logger.Warn(ane, "{0} parameter is null", nameof(storage));
-                throw ane;
+                throw new ArgumentNullException($"{nameof(storage)} is null");
             }
             IEnumerable<Book> books;
             try
