@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4.BookStorageLogic", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4.ConsoleTestProject", "Task4.ConsoleTestProject\Task4.ConsoleTestProject.csproj", "{D53F7129-8C40-484C-9364-1666DD49EFA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4.LoggerProviderLogic", "Task4.LoggerProviderLogic\Task4.LoggerProviderLogic.csproj", "{911471CA-0D8A-4794-8B92-07E48DC1D0BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{D53F7129-8C40-484C-9364-1666DD49EFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D53F7129-8C40-484C-9364-1666DD49EFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D53F7129-8C40-484C-9364-1666DD49EFA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{911471CA-0D8A-4794-8B92-07E48DC1D0BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{911471CA-0D8A-4794-8B92-07E48DC1D0BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{911471CA-0D8A-4794-8B92-07E48DC1D0BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{911471CA-0D8A-4794-8B92-07E48DC1D0BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
