@@ -3,31 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NLog;
 using Task4.BookListServiceLogic;
 using Task4.BookLogic;
 using Task4.BookStorageLogic;
+using Task4.LoggerProviderLogic;
 
 namespace Task4.ConsoleTestProject
 {
     class BookServiceTestModule
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static ILogger logger = 
+            LoggerProvider.GetLoggerForClassName(nameof(BookServiceTestModule));
 
         static void OnUnhandledException
             (object sender, UnhandledExceptionEventArgs e)
         {
             logger.Fatal("Unhandled exception {0}", e.ExceptionObject);
-            LogManager.Flush();
+            LoggerProvider.Flush();
         }
 
         static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.UnhandledException +=
-                (sender, eventArgs) => LogManager.Flush();
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
             string filepath = "storage.bin";
-            BinaryFileBookStorage storage = new BinaryFileBookStorage(filepath);
-            BookListService service = new BookListService();
+            ILogger bookStorageLogger = LoggerProvider.GetLoggerForClassName(nameof(BinaryFileBookStorage));
+            ILogger bookListServiceLogger = LoggerProvider.GetLoggerForClassName(nameof(BookListService));
+            BinaryFileBookStorage storage = new BinaryFileBookStorage(filepath, bookStorageLogger);
+            BookListService service = new BookListService(bookListServiceLogger);
 
             do
             {
@@ -40,7 +42,7 @@ namespace Task4.ConsoleTestProject
                     case "0":
                         goto userInputStopped;
                     case "1":
-                        service = new BookListService();
+                        service = new BookListService(bookListServiceLogger);
                         break;
                     case "2":
                         Console.WriteLine("Books from service:");
@@ -129,7 +131,7 @@ namespace Task4.ConsoleTestProject
                     case "10":
                         Console.Write("Enter filename");
                         filepath = Console.ReadLine();
-                        storage = new BinaryFileBookStorage(filepath);
+                        storage = new BinaryFileBookStorage(filepath, bookStorageLogger);
                         break;
                     case "11":
                         try
@@ -157,7 +159,7 @@ namespace Task4.ConsoleTestProject
             } while (true);
             userInputStopped:
             ;
-            LogManager.Flush();
+            LoggerProvider.Flush();
         }
 
         static void PrintMenu()

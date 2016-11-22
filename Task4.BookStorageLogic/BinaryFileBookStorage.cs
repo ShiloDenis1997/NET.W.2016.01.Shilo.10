@@ -12,8 +12,7 @@ namespace Task4.BookStorageLogic
     /// </summary>
     public class BinaryFileBookStorage : IBookListStorage
     {
-        private static readonly ILogger Logger = 
-            LoggerProvider.GetLoggerForClassName(nameof(BinaryFileBookStorage));
+        private readonly ILogger logger;
         /// <summary>
         /// Path to the storage binary file
         /// </summary>
@@ -24,12 +23,19 @@ namespace Task4.BookStorageLogic
         /// </summary>
         /// <exception cref="ArgumentException">Throws if <paramref name="filepath"/>
         /// is null, whitespace or empty</exception>
-        public BinaryFileBookStorage(string filepath)
+        /// <exception cref="ArgumentNullException">Throws 
+        /// if <paramref name="logger"/> is null</exception>
+        public BinaryFileBookStorage(string filepath, ILogger logger)
         {
+            if (logger == null)
+            {
+                throw new ArgumentNullException($"{nameof(logger)} is null");
+            }
             if (string.IsNullOrEmpty(filepath))
             {
                 throw new ArgumentException($"{nameof(filepath)} is null, whitespace or empty");
             }
+            this.logger = logger;
             this.filepath = filepath;
         }
 
@@ -58,7 +64,7 @@ namespace Task4.BookStorageLogic
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "Exception while writing to storage");
+                logger.Warn(ex, "Exception while writing to storage");
                 throw new BinaryBookStorageException("Exception while writing to storage", ex);
             }
         }
@@ -90,7 +96,7 @@ namespace Task4.BookStorageLogic
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "Exception while reading from storage");
+                logger.Warn(ex, "Exception while reading from storage");
                 throw new BinaryBookStorageException("Error while reading from storage", ex);
             }
             return books;

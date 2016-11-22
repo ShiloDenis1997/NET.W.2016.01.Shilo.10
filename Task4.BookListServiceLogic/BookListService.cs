@@ -11,8 +11,7 @@ namespace Task4.BookListServiceLogic
     /// </summary>
     public class BookListService
     {
-        private readonly static ILogger logger = 
-            LoggerProvider.GetLoggerForClassName(nameof(BookListService));
+        private readonly ILogger logger;
         /// <summary>
         /// Books are stored here
         /// </summary>
@@ -21,8 +20,15 @@ namespace Task4.BookListServiceLogic
         /// <summary>
         /// Initializes a new instance of <see cref="BookListService"/> class
         /// </summary>
-        public BookListService()
+        /// <exception cref="ArgumentNullException">Throws if <paramref name="logger"/>
+        /// is null</exception>
+        public BookListService(ILogger logger)
         {
+            if (logger == null)
+            {
+                throw new ArgumentNullException($"{nameof(logger)} is null");
+            }
+            this.logger = logger;
             logger.Debug("{0} constructor started", nameof(BookListService));
             bookSet = new SortedSet<Book>();
         }
@@ -32,14 +38,19 @@ namespace Task4.BookListServiceLogic
         /// uses a specified comparer
         /// </summary>
         /// <exception cref="ArgumentNullException">Throws if 
-        /// <paramref name="comparer"/> is null</exception>
-        public BookListService(IComparer<Book> comparer)
+        /// <paramref name="comparer"/>  or <paramref name="logger"/>is null</exception>
+        public BookListService(IComparer<Book> comparer, ILogger logger)
         {
-            logger.Debug("{0} constructor started", nameof(BookListService));
+            if (logger == null)
+            {
+                throw new ArgumentNullException($"{nameof(logger)} is null");
+            }
             if (comparer == null)
             {
                 throw new ArgumentNullException($"{nameof(comparer)} is null");
             }
+            this.logger = logger;
+            logger.Debug("{0} constructor started", nameof(BookListService));
             bookSet = new SortedSet<Book>(comparer);
         }
 
@@ -48,9 +59,9 @@ namespace Task4.BookListServiceLogic
         /// uses a specified comparison rule
         /// </summary>
         /// <exception cref="ArgumentNullException">Throws if 
-        /// <paramref name="comparison"/> is null</exception>
-        public BookListService(Comparison<Book> comparison)
-            : this(new ComparisonToIComparerAdapter<Book>(comparison))
+        /// <paramref name="comparison"/> or <paramref name="logger"/>is null</exception>
+        public BookListService(Comparison<Book> comparison, ILogger logger)
+            : this(new ComparisonToIComparerAdapter<Book>(comparison), logger)
         {
         }
 
@@ -59,14 +70,19 @@ namespace Task4.BookListServiceLogic
         /// elements copied from a specified enumerable collection
         /// </summary>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="books"/>
-        ///  is null</exception>
-        public BookListService(IEnumerable<Book> books)
+        ///  or <paramref name="logger"/> is null</exception>
+        public BookListService(IEnumerable<Book> books, ILogger logger)
         {
-            logger.Debug("{0} constructor started", nameof(BookListService));
+            if (logger == null)
+            {
+                throw new ArgumentNullException($"{nameof(logger)} is null");
+            }
             if (books == null)
             {
                 throw new ArgumentNullException($"{nameof(books)} parameter is null");
             }
+            this.logger = logger;
+            logger.Debug("{0} constructor started", nameof(BookListService));
             bookSet = new SortedSet<Book>(books);
         }
 
@@ -76,10 +92,10 @@ namespace Task4.BookListServiceLogic
         /// comparer
         /// </summary>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="books"/> or
-        /// <paramref name="comparer"/> is null</exception>
-        public BookListService(IEnumerable<Book> books, IComparer<Book> comparer)
+        /// <paramref name="comparer"/> or <paramref name="logger"/> is null</exception>
+        public BookListService
+            (IEnumerable<Book> books, IComparer<Book> comparer, ILogger logger)
         {
-            logger.Debug("{0} constructor started", nameof(BookListService));
             if (comparer == null)
             {
                 throw new ArgumentNullException($"{nameof(comparer)} is null");
@@ -88,6 +104,11 @@ namespace Task4.BookListServiceLogic
             {
                 throw new ArgumentNullException($"{nameof(books)} parameter is null");
             }
+            if (logger == null)
+            {
+                throw new ArgumentNullException($"{nameof(logger)} is null");
+            }
+            logger.Debug("{0} constructor started", nameof(BookListService));
             bookSet = new SortedSet<Book>(books, comparer);
         }
 
@@ -97,9 +118,9 @@ namespace Task4.BookListServiceLogic
         /// comparison rule
         /// </summary>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="books"/> or
-        /// <paramref name="comparison"/> is null</exception>
-        public BookListService(IEnumerable<Book> books, Comparison<Book> comparison)
-            : this(books, new ComparisonToIComparerAdapter<Book>(comparison))
+        /// <paramref name="comparison"/> or <paramref name="logger"/> is null</exception>
+        public BookListService(IEnumerable<Book> books, Comparison<Book> comparison, ILogger logger)
+            : this(books, new ComparisonToIComparerAdapter<Book>(comparison), logger)
         {
         }
 

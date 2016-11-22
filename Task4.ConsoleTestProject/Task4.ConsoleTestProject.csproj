@@ -74,6 +74,10 @@
       <Project>{eb5c82af-13a8-4dbd-847d-e96f76c1b3dd}</Project>
       <Name>Task4.BookStorageLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Task4.LoggerProviderLogic\Task4.LoggerProviderLogic.csproj">
+      <Project>{911471ca-0d8a-4794-8b92-07e48dc1d0bf}</Project>
+      <Name>Task4.LoggerProviderLogic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

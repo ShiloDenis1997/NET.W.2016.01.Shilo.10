@@ -29,5 +29,13 @@ namespace Task4.LoggerProviderLogic
             Logger logger = LogManager.GetLogger(classname);
             return new LoggerToILoggerAdapter(logger);
         }
+
+        /// <summary>
+        /// Flushes logs
+        /// </summary>
+        public static void Flush()
+        {
+            LogManager.Flush();
+        }
     }
 }
