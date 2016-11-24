@@ -61,7 +61,7 @@ namespace Task4.BookListServiceLogic
         /// <exception cref="ArgumentNullException">Throws if 
         /// <paramref name="comparison"/> or <paramref name="logger"/>is null</exception>
         public BookListService(Comparison<Book> comparison, ILogger logger)
-            : this(new ComparisonToIComparerAdapter<Book>(comparison), logger)
+            : this(Comparer<Book>.Create(comparison), logger)
         {
         }
 
@@ -120,7 +120,7 @@ namespace Task4.BookListServiceLogic
         /// <exception cref="ArgumentNullException">Throws if <paramref name="books"/> or
         /// <paramref name="comparison"/> or <paramref name="logger"/> is null</exception>
         public BookListService(IEnumerable<Book> books, Comparison<Book> comparison, ILogger logger)
-            : this(books, new ComparisonToIComparerAdapter<Book>(comparison), logger)
+            : this(books, Comparer<Book>.Create(comparison), logger)
         {
         }
 
@@ -214,7 +214,7 @@ namespace Task4.BookListServiceLogic
             {
                 throw new ArgumentNullException($"{nameof(comparison)} is null");
             }
-            SortBooksByTag(new ComparisonToIComparerAdapter<Book>(comparison));
+            SortBooksByTag(Comparer<Book>.Create(comparison));
         }
 
         /// <summary>
@@ -271,28 +271,6 @@ namespace Task4.BookListServiceLogic
                 throw new BookListException($"{nameof(storage.LoadBooks)} returned null");
             }
             bookSet = new SortedSet<Book>(books);
-        }
-
-        /// <summary>
-        /// Adapter class to adapt <see cref="Comparison{T}"/> to <see cref="IComparer{T}"/>
-        /// </summary>
-        internal class ComparisonToIComparerAdapter<T> : IComparer<T>
-        {
-            private readonly Comparison<T> comparison;
-
-            public ComparisonToIComparerAdapter(Comparison<T> comparison)
-            {
-                if (comparison == null)
-                {
-                    throw new ArgumentNullException($"{nameof(comparison)} is null");
-                }
-                this.comparison = comparison;
-            }
-
-            public int Compare(T x, T y)
-            {
-                return comparison(x, y);
-            }
         }
     }
 }
