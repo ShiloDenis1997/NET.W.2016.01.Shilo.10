@@ -44,6 +44,7 @@
     <Compile Include="BinaryFileBookStorage.cs" />
     <Compile Include="BinarySerializerBookStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XmlBookStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Task4.BookListServiceLogic\Task4.BookListServiceLogic.csproj">

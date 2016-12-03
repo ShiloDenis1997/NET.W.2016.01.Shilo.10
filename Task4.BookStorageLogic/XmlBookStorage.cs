@@ -8,7 +8,7 @@ using Task4.BookLogic;
 
 namespace Task4.BookStorageLogic
 {
-    public class BinarySerializerBookStorage : IBookListStorage
+    public class XmlBookStorage : IBookListStorage
     {
         public IEnumerable<Book> LoadBooks()
         {
