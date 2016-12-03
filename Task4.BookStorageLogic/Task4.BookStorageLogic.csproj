@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="BinaryBookStorageException.cs" />
     <Compile Include="BinaryFileBookStorage.cs" />
+    <Compile Include="BinarySerializerBookStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
