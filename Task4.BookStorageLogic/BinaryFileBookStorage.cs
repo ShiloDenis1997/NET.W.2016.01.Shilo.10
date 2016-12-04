@@ -48,7 +48,8 @@ namespace Task4.BookStorageLogic
         {
             try
             {
-                using (FileStream fs = new FileStream(filepath, FileMode.Create, FileAccess.Write))
+                using (FileStream fs = new FileStream
+                    (filepath, FileMode.Create, FileAccess.Write))
                 {
                     using (BinaryWriter bw = new BinaryWriter(fs))
                     {
@@ -65,7 +66,8 @@ namespace Task4.BookStorageLogic
             catch (Exception ex)
             {
                 logger.Warn(ex, "Exception while writing to storage");
-                throw new BinaryBookStorageException("Exception while writing to storage", ex);
+                throw new BinaryBookStorageException
+                    ("Exception while writing to storage", ex);
             }
         }
 
