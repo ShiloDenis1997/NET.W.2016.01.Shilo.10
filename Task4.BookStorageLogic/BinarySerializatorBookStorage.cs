@@ -66,6 +66,7 @@ namespace Task4.BookStorageLogic
             selector.AddSurrogate
                 (typeof(Book), new StreamingContext(StreamingContextStates.All),
                     new BookSurrogate());
+            formatter.SurrogateSelector = selector;
             try
             {
                 using (FileStream fileStream = new FileStream
@@ -76,6 +77,7 @@ namespace Task4.BookStorageLogic
                         if (book != null)
                             formatter.Serialize(fileStream, book);
                     }
+                    fileStream.Flush();
                 }
             }
             catch (Exception ex)

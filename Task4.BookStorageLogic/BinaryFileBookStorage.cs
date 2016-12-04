@@ -60,6 +60,7 @@ namespace Task4.BookStorageLogic
                             bw.Write(book.PublishedYear);
                             bw.Write(book.Price);
                         }
+                        bw.Flush();
                     }
                 }
             }

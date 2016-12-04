@@ -210,26 +210,44 @@ namespace Task4.ConsoleTestProject
 
         static void SetStorage()
         {
-            Console.WriteLine("Select storage type: " +
-                              "\t1 - Binary storage via BinaryReader/Writer" +
-                              "\t2 - Binary stroage via binary serializer" +
-                              "\t3 - XML-storage" +
+            Console.WriteLine("Select storage type: \n" +
+                              "\t1 - Binary storage via BinaryReader/Writer\n" +
+                              "\t2 - Binary stroage via binary serializer\n" +
+                              "\t3 - XML-storage\n" +
                               "\tOther - Do not specify storage");
             string ans = Console.ReadLine();
+            int numAns;
             switch (ans)
-            {//ToDo
+            {
                 case "1":
+                    numAns = 1;
                     break;
                 case "2":
+                    numAns = 2;
                     break;
                 case "3":
+                    numAns = 3;
                     break;
                 default:
                     return;
             }
-            Console.Write("Enter filename");
+            Console.Write("Enter filename: ");
             string filepath = Console.ReadLine();
-            storage = new BinaryFileBookStorage(filepath, bookStorageLogger);
+            switch (numAns)
+            {
+                case 1:
+                    storage = new BinaryFileBookStorage
+                        (filepath, bookStorageLogger);
+                    break;
+                case 2:
+                    storage = new BinarySerializatorBookStorage
+                        (filepath, bookStorageLogger);
+                    break;
+                case 3:
+                    storage = new XmlBookStorage
+                        (filepath, bookStorageLogger);
+                    break;
+            }
         }
 
         static void StoreBooks()
