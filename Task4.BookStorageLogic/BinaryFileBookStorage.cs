@@ -12,44 +12,60 @@ namespace Task4.BookStorageLogic
     /// </summary>
     public class BinaryFileBookStorage : IBookListStorage
     {
-        private readonly ILogger logger;
         /// <summary>
-        /// Path to the storage binary file
+        /// Binary file name
         /// </summary>
-        private readonly string filepath;
+        private string filename;
+        private readonly ILogger logger;
 
         /// <summary>
-        /// Initialized storage with specified <paramref name="filepath"/>
+        /// Initializes storage with specified <paramref name="filename"/>
         /// </summary>
-        /// <exception cref="ArgumentException">Throws if <paramref name="filepath"/>
+        /// <exception cref="ArgumentException">Throws if <paramref name="filename"/>
         /// is null, whitespace or empty</exception>
         /// <exception cref="ArgumentNullException">Throws 
         /// if <paramref name="logger"/> is null</exception>
-        public BinaryFileBookStorage(string filepath, ILogger logger)
+        public BinaryFileBookStorage(string filename, ILogger logger)
         {
             if (logger == null)
             {
                 throw new ArgumentNullException($"{nameof(logger)} is null");
             }
-            if (string.IsNullOrEmpty(filepath))
-            {
-                throw new ArgumentException($"{nameof(filepath)} is null, whitespace or empty");
-            }
+
             this.logger = logger;
-            this.filepath = filepath;
+            Filename = filename;
+        }
+
+        /// <summary>
+        /// Path to storage file
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        /// Throws if setted value is null, whitespace or empty</exception>
+        public string Filename
+        {
+            get { return filename; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException
+                        ($"{nameof(filename)} is null, whitespace or empty");
+                }
+                filename = value;
+            }
         }
 
         /// <summary>
         /// Stores <paramref name="books"/> in binary file
         /// </summary>
         /// <exception cref="BinaryBookStorageException">Throws if 
-        /// some there is some errors while writing to file</exception>
+        /// there is some errors while writing to file</exception>
         public void StoreBooks(IEnumerable<Book> books)
         {
             try
             {
                 using (FileStream fs = new FileStream
-                    (filepath, FileMode.Create, FileAccess.Write))
+                    (filename, FileMode.Create, FileAccess.Write))
                 {
                     using (BinaryWriter bw = new BinaryWriter(fs))
                     {
@@ -82,7 +98,7 @@ namespace Task4.BookStorageLogic
             List<Book> books = new List<Book>();
             try
             {
-                using (FileStream fs = new FileStream(filepath, FileMode.Open))
+                using (FileStream fs = new FileStream(filename, FileMode.Open))
                 {
                     using (BinaryReader br = new BinaryReader(fs))
                     {

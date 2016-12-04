@@ -15,24 +15,54 @@ namespace Task4.BookStorageLogic
 {
     public class BinarySerializatorBookStorage : IBookListStorage
     {
-        private string filepath;
+        /// <summary>
+        /// Binary file name
+        /// </summary>
+        private string filename;
         private ILogger logger;
 
-        public BinarySerializatorBookStorage(string filepath, ILogger logger)
+        /// <summary>
+        /// Initializes storage with specified <paramref name="filename"/>
+        /// </summary>
+        /// <exception cref="ArgumentException">Throws if <paramref name="filename"/>
+        /// is null, whitespace or empty</exception>
+        /// <exception cref="ArgumentNullException">Throws 
+        /// if <paramref name="logger"/> is null</exception>
+        public BinarySerializatorBookStorage(string filename, ILogger logger)
         {
             if (logger == null)
             {
                 throw new ArgumentNullException($"{nameof(logger)} is null");
             }
-            if (string.IsNullOrEmpty(filepath))
-            {
-                throw new ArgumentException
-                    ($"{nameof(filepath)} is null, whitespace or empty");
-            }
-            this.filepath = filepath;
+
+            Filename = filename;
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Path to storage file
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        /// Throws if setted value is null, whitespace or empty</exception>
+        public string Filename
+        {
+            get { return filename; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException
+                        ($"{nameof(filename)} is null, whitespace or empty");
+                }
+                filename = value;
+            }
+        }
+        
+        /// <summary>
+        /// Loads books from binary file. 
+        /// </summary>
+        /// <exception cref="BinarySerializatorBookStorageException"> Throws
+        /// if there are some errors while working with storage file</exception>
         public IEnumerable<Book> LoadBooks()
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -44,7 +74,7 @@ namespace Task4.BookStorageLogic
             LinkedList<Book> books = new LinkedList<Book>();
             try
             {
-                using (FileStream fileStream = new FileStream(filepath,
+                using (FileStream fileStream = new FileStream(filename,
                         FileMode.Open))
                 {
                     while (fileStream.Position != fileStream.Length)
@@ -58,7 +88,12 @@ namespace Task4.BookStorageLogic
             }
             return books.ToArray();
         }
-
+        
+        /// <summary>
+        /// Stores <paramref name="books"/> to storage file
+        /// </summary>
+        /// <exception cref="BinarySerializatorBookStorageException">Throws if
+        /// there are some errors on serializing</exception>
         public void StoreBooks(IEnumerable<Book> books)
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -70,7 +105,7 @@ namespace Task4.BookStorageLogic
             try
             {
                 using (FileStream fileStream = new FileStream
-                        (filepath, FileMode.Create, FileAccess.Write, FileShare.None))
+                        (filename, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
                     foreach (var book in books)
                     {
@@ -87,6 +122,9 @@ namespace Task4.BookStorageLogic
             }
         }
 
+        /// <summary>
+        /// Specifies how to serialize and deserialize <see cref="Book"/> objects
+        /// </summary>
         private class BookSurrogate : ISerializationSurrogate
         {
             /// <summary>
