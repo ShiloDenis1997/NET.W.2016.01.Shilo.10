@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NLog;
 
-namespace Task4.LoggerProviderLogic
+namespace Task4.LoggerInterfaces
 {
     /// <summary>
     /// Provides most used methods of loggers
@@ -30,8 +29,5 @@ namespace Task4.LoggerProviderLogic
         void Trace(string message);
         void Trace(string message, params object[] args);
         void Trace(Exception exception, string message, params object[] args);
-        void Log(LogLevel level, string message);
-        void Log(LogLevel level, string message, params object[] args);
-        void Log(LogLevel level, Exception exception, string message, params object[] args);
     }
 }

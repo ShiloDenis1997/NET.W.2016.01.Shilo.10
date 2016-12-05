@@ -50,7 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ILogger.cs" />
     <Compile Include="LoggerProvider.cs" />
     <Compile Include="LoggerToILoggerAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -59,6 +58,12 @@
     <None Include="loggerProviderKeypair.snk" />
     <None Include="packages.config" />
     <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Task4.LoggerInterfaces\Task4.LoggerInterfaces.csproj">
+      <Project>{78c6460d-4a44-48f7-b87e-c07d2462f48b}</Project>
+      <Name>Task4.LoggerInterfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

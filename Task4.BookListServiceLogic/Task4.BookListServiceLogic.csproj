@@ -56,9 +56,9 @@
       <Project>{C2A412DE-D3C9-413D-8671-851205C55A90}</Project>
       <Name>Task4.BookLogic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Task4.LoggerProviderLogic\Task4.LoggerProviderLogic.csproj">
-      <Project>{911471ca-0d8a-4794-8b92-07e48dc1d0bf}</Project>
-      <Name>Task4.LoggerProviderLogic</Name>
+    <ProjectReference Include="..\Task4.LoggerInterfaces\Task4.LoggerInterfaces.csproj">
+      <Project>{78c6460d-4a44-48f7-b87e-c07d2462f48b}</Project>
+      <Name>Task4.LoggerInterfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

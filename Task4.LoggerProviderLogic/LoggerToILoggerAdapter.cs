@@ -1,5 +1,6 @@
 ﻿using System;
 using NLog;
+using ILogger = Task4.LoggerInterfaces.ILogger;
 
 namespace Task4.LoggerProviderLogic
 {

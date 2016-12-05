@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D53F7129-8C40-484C-9364-1666DD49EFA7}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{78C6460D-4A44-48F7-B87E-C07D2462F48B}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Task4.ConsoleTestProject</RootNamespace>
-    <AssemblyName>Task4.ConsoleTestProject</AssemblyName>
+    <RootNamespace>Task4.LoggerInterfaces</RootNamespace>
+    <AssemblyName>Task4.LoggerInterfaces</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,11 +29,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>LoggerInterfacesKeypair.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.3.11\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,41 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BookServiceTestModule.cs" />
+    <Compile Include="ILogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-    <None Include="README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Task4.BookListServiceLogic\Task4.BookListServiceLogic.csproj">
-      <Project>{35f2f0a6-8c33-4c3a-9a71-204a093873ab}</Project>
-      <Name>Task4.BookListServiceLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Task4.BookLogic\Task4.BookLogic.csproj">
-      <Project>{c2a412de-d3c9-413d-8671-851205c55a90}</Project>
-      <Name>Task4.BookLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Task4.BookStorageLogic\Task4.BookStorageLogic.csproj">
-      <Project>{eb5c82af-13a8-4dbd-847d-e96f76c1b3dd}</Project>
-      <Name>Task4.BookStorageLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Task4.LoggerInterfaces\Task4.LoggerInterfaces.csproj">
-      <Project>{78c6460d-4a44-48f7-b87e-c07d2462f48b}</Project>
-      <Name>Task4.LoggerInterfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Task4.LoggerProviderLogic\Task4.LoggerProviderLogic.csproj">
-      <Project>{911471ca-0d8a-4794-8b92-07e48dc1d0bf}</Project>
-      <Name>Task4.LoggerProviderLogic</Name>
-    </ProjectReference>
+    <None Include="LoggerInterfacesKeypair.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

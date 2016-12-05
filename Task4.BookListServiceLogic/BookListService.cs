@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Task4.BookLogic;
-using Task4.LoggerProviderLogic;
+using Task4.LoggerInterfaces;
 
 namespace Task4.BookListServiceLogic
 {

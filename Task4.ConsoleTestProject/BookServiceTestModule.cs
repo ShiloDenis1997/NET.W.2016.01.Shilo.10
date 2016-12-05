@@ -7,6 +7,7 @@ using Task4.BookListServiceLogic;
 using Task4.BookLogic;
 using Task4.BookStorageLogic;
 using Task4.LoggerProviderLogic;
+using ILogger = Task4.LoggerInterfaces.ILogger;
 
 namespace Task4.ConsoleTestProject
 {
