@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Task4.BookListServiceLogic;
 using Task4.BookLogic;
 using Task4.LoggerInterfaces;
+using Task4.LoggerProviderLogic;
 
 namespace Task4.BookStorageLogic
 {
@@ -26,17 +27,11 @@ namespace Task4.BookStorageLogic
         /// </summary>
         /// <exception cref="ArgumentException">Throws if <paramref name="filename"/>
         /// is null, whitespace or empty</exception>
-        /// <exception cref="ArgumentNullException">Throws 
-        /// if <paramref name="logger"/> is null</exception>
         public BinarySerializatorBookStorage(string filename, ILogger logger)
         {
-            if (logger == null)
-            {
-                throw new ArgumentNullException($"{nameof(logger)} is null");
-            }
-
             Filename = filename;
-            this.logger = logger;
+            this.logger = logger ?? LoggerProvider.GetLoggerForClassName
+                (nameof(BinarySerializatorBookStorage));
         }
 
         /// <summary>

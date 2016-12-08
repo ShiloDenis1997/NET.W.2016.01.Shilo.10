@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 using Task4.BookListServiceLogic;
 using Task4.BookLogic;
 using Task4.LoggerInterfaces;
+using Task4.LoggerProviderLogic;
 
 namespace Task4.BookStorageLogic
 {
@@ -25,17 +26,11 @@ namespace Task4.BookStorageLogic
         /// </summary>
         /// <exception cref="ArgumentException">Throws if <paramref name="filename"/>
         /// is null, whitespace or empty</exception>
-        /// <exception cref="ArgumentNullException">Throws 
-        /// if <paramref name="logger"/> is null</exception>
         public XmlBookStorage(string filename, ILogger logger)
         {
-            if (logger == null)
-            {
-                throw new ArgumentNullException($"{nameof(logger)} is null");
-            }
-
             Filename = filename;
-            this.logger = logger;
+            this.logger = logger ?? LoggerProvider.GetLoggerForClassName
+                (nameof(XmlBookStorage));
         }
 
         /// <summary>
@@ -64,10 +59,10 @@ namespace Task4.BookStorageLogic
         /// cannot parse data from xml-file</exception>
         public IEnumerable<Book> LoadBooks()
         {
-            XDocument storage = XDocument.Load(filename);
             IEnumerable<Book> books;
             try
             {
+                XDocument storage = XDocument.Load(filename);
                 books = storage.Descendants("Book")
                     .Select(el =>
                         new Book(el.Attribute("Name").Value,
@@ -97,7 +92,14 @@ namespace Task4.BookStorageLogic
                         new XAttribute("Author", book.Author),
                         new XAttribute("Price", book.Price),
                         new XAttribute("PublishedYear", book.PublishedYear)))));
-            storage.Save(filename);
+            try
+            {
+                storage.Save(filename);
+            }
+            catch (Exception ex)
+            {
+                throw new XmlBookStorageException("Error while saving xml", ex);
+            }
         }
     }
 }
